@@ -1,503 +1,122 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pesquisa Socioeconômica</title>
-<meta name="description" content="Pesquisa socioeconômica com perguntas sobre perfil pessoal, educacional e profissional e gráficos de resultados.">
-<meta name="theme-color" content="#0b2545">
-<meta name="format-detection" content="telephone=no">
-<meta name="color-scheme" content="light">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Pesquisa Socioeconômica">
-<meta property="og:description" content="Ajude-nos a entender o seu perfil socioeconômico. Responda em poucos minutos.">
-<meta property="og:locale" content="pt_BR">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b2545'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%233b82e0' stroke-width='4'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Anton&family=Kaushan+Script&display=swap">
-<style>
-/* ============================================================
-   BASE E RESET
-============================================================ */
-:root{
-  --ink:#0f1f35;--n900:#0b2545;--n800:#13386b;--b700:#1b4fa8;--b600:#2563c9;--b500:#3b82e0;--b400:#5a9be8;--b300:#a8c6f0;--b100:#e8f0fc;--b50:#f5f8fd;
-  --mut:#5a6b82;--line:#dbe4f0;--bg:#f2f6fb;
-  color-scheme:light;
-}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:80px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.55;font-size:16px;min-height:100vh;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased}
-.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 24px}
-button,.opt,.tab,.chip,.seg{touch-action:manipulation}
-.skip{position:absolute;left:-999px;top:8px;z-index:100}
-.skip:focus{left:8px;background:#fff;color:var(--n900);padding:8px 14px;border-radius:8px;font-weight:600}
-.nojs{padding:24px;background:#fff7e6;color:#7a5200;text-align:center}
-
-/* ============================================================
-   TOPO / NAVEGAÇÃO
-============================================================ */
-.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;flex-wrap:nowrap}
-.brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1rem;color:var(--n900);letter-spacing:-.01em}
-.logo{width:28px;height:28px;border-radius:7px;background:var(--n900);position:relative;flex:none}
-.logo::after{content:"";position:absolute;inset:7px;border-radius:50%;border:3px solid var(--b500);border-right-color:transparent}
-nav{display:flex;gap:4px;align-self:stretch}
-.tab{background:transparent;color:var(--mut);border:0;border-bottom:3px solid transparent;padding:0 18px;font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;transition:color .15s,border-color .15s;min-height:64px}
-.tab:hover{color:var(--n900)}
-.tab.on{color:var(--b700);border-bottom-color:var(--b600)}
-.bd{display:inline-block;min-width:20px;padding:1px 7px;border-radius:99px;background:var(--b600);color:#fff;font-size:.72rem;margin-left:6px;font-weight:700;text-align:center;line-height:1.5}
-button:focus-visible,.opt input:focus-visible+span,.tab:focus-visible,.chip:focus-visible,.seg:focus-visible,.go:focus-visible,.btn:focus-visible,.fbk:focus-visible{outline:3px solid var(--b400);outline-offset:3px}
-
-/* ============================================================
-   HERO / ABERTURA ANIMADA
-============================================================ */
-.hero{
-  position:relative;overflow:hidden;color:#fff;
-  min-height:calc(100vh - 64px);min-height:calc(100dvh - 64px);
-  display:grid;place-items:center;text-align:center;padding:60px 20px;
-  background:radial-gradient(60% 50% at 50% 36%,rgba(59,130,224,.32),transparent 70%),linear-gradient(180deg,#071a35,#0b2545 55%,#0f3a73);
-}
-.hero[hidden]{display:none}
-.aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.aurora::before,.aurora::after{content:"";position:absolute;border-radius:50%;filter:blur(80px);opacity:.4}
-.aurora::before{width:420px;height:420px;background:#2563c9;left:-140px;top:-120px;animation:deriva 16s ease-in-out infinite alternate}
-.aurora::after{width:380px;height:380px;background:#3b82e0;right:-140px;bottom:-100px;animation:deriva 19s ease-in-out infinite alternate-reverse}
-@keyframes deriva{to{transform:translate(90px,60px) scale(1.2)}}
-.viz{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:.36;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%)}
-.viz-svg{width:min(135vw,780px);height:auto;animation:gira 140s linear infinite}
-@keyframes gira{to{transform:rotate(360deg)}}
-.sg{fill:none;stroke-width:46;stroke-dasharray:0 692;stroke-dashoffset:var(--off);transform:rotate(-90deg);transform-origin:200px 200px;animation:traco 1.6s cubic-bezier(.3,.7,.2,1) forwards;animation-delay:calc(.3s + var(--n)*.3s)}
-@keyframes traco{to{stroke-dasharray:var(--len) 692}}
-.ring{fill:none;stroke:rgba(255,255,255,.16);stroke-width:1;stroke-dasharray:1210;stroke-dashoffset:1210;animation:anel 2.2s ease-out .1s forwards}
-.ring.r2{stroke-dasharray:3 9;stroke-dashoffset:0;animation:none;stroke:rgba(255,255,255,.2)}
-@keyframes anel{to{stroke-dashoffset:0}}
-.hero-c{position:relative;z-index:1;max-width:980px;width:100%;min-width:0;display:flex;flex-direction:column;align-items:center}
-.kick{font-family:"Kaushan Script","Brush Script MT",cursive;font-style:normal;font-weight:400;font-size:clamp(2.1rem,7.5vw,3.6rem);color:#6cb2ff;text-shadow:0 0 26px rgba(59,130,224,.6);margin-bottom:6px;animation:suave 1s .9s both}
-@keyframes suave{from{opacity:0;filter:blur(8px);transform:translateY(10px)}to{opacity:1;filter:blur(0);transform:none}}
-.hero h1.lt{font-family:Anton,Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;line-height:.9;margin:0 0 22px;letter-spacing:.01em}
-.l1,.l2{display:block;overflow:hidden;padding:.2em 0 .04em;margin-top:-.2em}
-.l1 b,.l2 b{display:block;font-weight:400;transform:translateY(118%);animation:revela 1.1s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:.5s}
-.l2 b{animation-delay:.74s}
-@keyframes revela{to{transform:none}}
-.l1{font-size:clamp(3.4rem,22vw,12rem)}
-.l2{font-size:clamp(2.2rem,13.5vw,8.6rem);margin-top:-.06em}
-.l1 b{background:linear-gradient(180deg,#fff 25%,#8fbdf5);-webkit-background-clip:text;background-clip:text;color:transparent}
-.l2 b{color:transparent;-webkit-text-stroke:2px #6cb2ff}
-.trio{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px;text-transform:uppercase;letter-spacing:.3em;font-size:.76rem;font-weight:600;color:#8fb1de;margin-bottom:22px;animation:entra .9s 1s both}
-.trio i{width:7px;height:7px;background:#3b82e0;transform:rotate(45deg)}
-.hero .lead{margin:0 auto;font-size:clamp(1.15rem,3.8vw,1.4rem);color:#dbe9fb;font-weight:500;max-width:36ch;animation:entra .9s 1.15s both}
-.btns{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px;margin-top:30px;max-width:100%;animation:entra .9s 1.35s both}
-@keyframes entra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.go{display:inline-flex;align-items:center;justify-content:center;gap:0;min-width:230px;height:58px;padding:0 44px;background:#2563c9;color:#fff;border:1px solid rgba(255,255,255,.24);border-radius:999px;font-family:inherit;font-weight:700;font-size:1.08rem;cursor:pointer;box-shadow:0 12px 28px rgba(37,99,235,.5),0 1px 0 rgba(255,255,255,.28) inset;transition:transform .2s,background .2s,box-shadow .2s}
-.go::after{content:"\2192";display:inline-block;margin-left:12px;font-size:1.3rem;transition:transform .2s}
-.go:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 16px 34px rgba(37,99,235,.6),0 1px 0 rgba(255,255,255,.28) inset}
-.go:hover::after{transform:translateX(5px)}
-.go:active{transform:translateY(0)}
-.ctw{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:34px}
-.ctw[hidden]{display:none}
-.ctw>span{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#8fb1de}
-.ct{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.ct a{padding:9px 20px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:#cfe3ff;text-decoration:none;font-weight:600;font-size:.88rem;background:transparent;transition:background .15s}
-.ct a:hover{background:rgba(255,255,255,.12)}
-
-/* ============================================================
-   MAIN E VIEWS
-============================================================ */
-main{position:relative;z-index:2;flex:1 0 auto;margin-top:0;padding-top:22px;padding-bottom:30px}
-main[hidden]{display:none}
-.view{display:none}
-.view.on{display:block;animation:troca .38s cubic-bezier(.2,.8,.2,1) both}
-@keyframes troca{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-#view-form{max-width:860px;margin-left:auto;margin-right:auto}
-
-/* Cabeçalho flutuante do formulário */
-.fhead{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:15;background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px;margin:0 0 16px;box-shadow:0 4px 14px rgba(15,31,53,.08)}
-.fbk{width:40px;height:40px;padding:0;border-radius:10px;border:0;background:var(--b100);color:var(--b700);display:grid;place-items:center;cursor:pointer;transition:background .15s;font-size:1.2rem}
-.fbk:hover{background:var(--b300)}
-.fbrand{justify-self:center;display:flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;color:var(--n900);white-space:nowrap}
-.fbrand .logo{width:24px;height:24px;border-radius:6px}
-.fbrand .logo::after{inset:6px;border-width:2.5px}
-
-/* Steps circulares (5 etapas) */
-.stp{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:0 0 14px}
-.sd{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:.7rem;font-weight:600;color:var(--mut);position:relative;min-width:0}
-.sd i{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#fff;border:2px solid var(--line);font-style:normal;font-weight:700;font-size:.85rem;position:relative;z-index:1;transition:all .25s}
-.sd::before{content:"";position:absolute;top:15px;left:-50%;width:100%;height:2px;background:var(--line);transition:background .35s}
-.sd:first-child::before{display:none}
-.sd.done::before,.sd.on::before{background:var(--b600)}
-.sd.on{color:var(--n900)}
-.sd.on i{background:var(--b600);border-color:var(--b600);color:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.2)}
-.sd.done i{background:var(--n900);border-color:var(--n900);color:#fff}
-@media (min-width:641px){.sd{font-size:.82rem}}
-
-.prog{height:6px;background:#dbe4f0;border-radius:99px;overflow:hidden}
-.prog i{display:block;height:100%;width:0;background:var(--b600);border-radius:99px;transition:width .35s}
-.count{margin:8px 0 16px;text-align:right;color:var(--mut);font-size:.83rem;font-weight:500;font-variant-numeric:tabular-nums}
-.note{background:var(--b100);border:1px solid var(--b300);box-shadow:inset 4px 0 0 var(--b600);border-radius:8px;padding:12px 16px;margin-bottom:16px;color:var(--n800);font-size:.9rem}
-.lnk{background:none;border:0;color:var(--b700);font:inherit;font-weight:600;text-decoration:underline;cursor:pointer;padding:0;margin-left:6px}
-
-/* Painéis */
-.panel{background:#fff;border:1px solid var(--line);border-top:3px solid var(--b600);border-radius:12px;padding:32px;box-shadow:0 1px 3px rgba(15,31,53,.06),0 8px 24px rgba(15,31,53,.05)}
-.panel h2{margin:0 0 4px;font-size:1.5rem;font-weight:700;color:var(--n900);letter-spacing:-.015em;text-wrap:balance}
-.sub{margin:0 0 20px;color:var(--mut);padding-bottom:18px;border-bottom:1px solid var(--line);text-wrap:balance}
-
-/* Perguntas em bloco */
-.q-list{display:flex;flex-direction:column;gap:0}
-.q{border:0;border-bottom:1px solid var(--line);margin:0;padding:22px 14px;min-width:0}
-.q:last-of-type{border-bottom:0}
-.q.ok{box-shadow:inset 3px 0 0 var(--b600)}
-.q.miss{background:#fff5f4;border-radius:8px}
-.q.miss legend{color:#a4281e}
-.q legend{display:flex;gap:12px;align-items:flex-start;font-weight:600;color:var(--n900);padding:0;margin-bottom:14px;float:left;width:100%;font-size:1rem;line-height:1.45}
-.n{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--n900);color:#fff;font-size:.82rem;font-weight:600;flex:none}
-.opts{clear:both;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding-left:40px}
-.opt{position:relative;display:block;cursor:pointer}
-.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
-.opt span{display:flex;align-items:center;gap:10px;padding:11px 14px;min-height:48px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:.92rem;transition:border-color .15s,background .15s}
-.opt span::before{content:"";width:16px;height:16px;border-radius:50%;border:2px solid #b4c3d9;flex:none;background:#fff;transition:all .15s}
-.opt:hover span{border-color:var(--b500);background:var(--b50)}
-.opt input:checked+span{background:var(--b100);border-color:var(--b600);color:var(--n900);font-weight:600}
-.opt input:checked+span::before{border-color:var(--b600);background:var(--b600);box-shadow:inset 0 0 0 3px #fff}
-
-.actions{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
-.btn{background:var(--b600);color:#fff;border:1px solid var(--b600);border-radius:8px;padding:12px 28px;font:inherit;font-weight:600;font-size:.95rem;cursor:pointer;transition:background .15s,transform .1s}
-.btn:hover{background:var(--b700);border-color:var(--b700)}
-.btn:active:not([disabled]){transform:translateY(1px) scale(.99)}
-.btn.ghost{background:#fff;color:var(--n800);border-color:#c3d1e6}
-.btn.ghost:hover{background:var(--b50);border-color:var(--b500)}
-.btn.sm{padding:9px 16px;font-size:.86rem}
-.btn.light{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.4);color:#fff}
-.btn.light:hover{background:rgba(255,255,255,.18);border-color:#fff}
-.btn[disabled]{opacity:.4;cursor:not-allowed}
-.msg{min-height:22px;margin-top:8px;color:#a4281e;font-weight:600;font-size:.9rem}
-.msg.ok{color:#1b7a3f}
-.actions .btn:last-child{flex:1.4}
-.actions .btn:first-child{flex:.8}
-@media (min-width:641px){.actions .btn:last-child,.actions .btn:first-child{flex:0 0 auto}}
-
-/* Cadastro */
-.fld{margin-bottom:16px;min-width:0}
-.fld label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px;color:var(--n900)}
-.fld label em{font-weight:400;color:var(--mut);font-style:normal}
-.fld input,.fld select{width:100%;height:50px;padding:0 14px;border:1.5px solid #c3d1e6;border-radius:10px;font:inherit;font-size:1rem;background:#fff;color:var(--ink);transition:border-color .15s,box-shadow .15s}
-.fld input::placeholder{color:#8da0ba}
-.fld input:hover,.fld select:hover{border-color:#9db7de}
-.fld input:focus,.fld select:focus{outline:none;border-color:var(--b600);box-shadow:0 0 0 4px rgba(37,99,235,.15)}
-.fld select{-webkit-appearance:none;appearance:none;padding-right:42px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231450a3' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center/16px}
-.fld .bad,.cons.bad{border-color:#d9534f}
-.cons.bad{background:#fff5f4}
-.err{display:block;color:#b42318;font-size:.82rem;margin-top:5px}
-.err:empty{display:none}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
-.g2b{grid-template-columns:2fr 1fr}
-.cons{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 12px;font-size:.92rem;font-weight:500;color:var(--n900);cursor:pointer}
-.cons input{width:22px;height:22px;margin:0;accent-color:var(--b600);flex:none;cursor:pointer}
-details.priv{background:var(--b50);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:.9rem}
-details.priv summary{font-weight:700;color:var(--n900);cursor:pointer}
-details.priv p{margin:8px 0 0;color:var(--ink)}
-
-/* Revisão */
-.rv-box{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px}
-.rv-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
-.rv-h h3{margin:0;font-size:1.05rem;color:var(--n900)}
-.rv-dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:0}
-.rv-dl dt{font-size:.74rem;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
-.rv-dl dd{margin:2px 0 0;font-weight:600;word-break:break-word}
-.rt{list-style:none;padding:0;margin:12px 0 0}
-.rt li{padding:10px 0;border-bottom:1px solid var(--line);font-size:.92rem;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
-.rt li:last-child{border:0}
-.rt em{color:var(--mut);font-style:normal;font-size:.88rem}
-.rt b{color:var(--n900);font-weight:600;text-align:right}
-
-/* Tela final */
-#done .done-box{position:relative;overflow:hidden;min-height:calc(100vh - 130px);min-height:calc(100dvh - 130px);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:48px 22px;border:0;color:#fff;background:radial-gradient(70% 50% at 50% 0,rgba(59,130,224,.45),transparent 70%),linear-gradient(160deg,#0b2545,#13386b);box-shadow:0 24px 60px rgba(11,37,69,.35);text-align:center}
-.dkick{letter-spacing:.3em;text-transform:uppercase;font-size:.74rem;font-weight:700;color:#8fb1de;margin-bottom:10px;animation:entra .8s .1s both}
-#done h2.dt{color:#fff;font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.06em;line-height:1;margin:0 0 12px}
-.dt .l1{font-size:clamp(3.2rem,18vw,6.6rem)}
-.dt .l2{font-size:clamp(2.1rem,11vw,4.3rem)}
-.dt b{animation-delay:.2s}
-.dt .l2 b{animation-delay:.42s}
-#done .sub{color:#c9dcf6;max-width:34ch;margin:0 auto;font-size:1.02rem;border:0;padding:0;animation:entra .8s .75s both}
-.rcb{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:560px;margin:22px auto 14px}
-.rcb div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 12px;text-align:left;min-width:0}
-.rcb small{display:block;color:#9fb6d8;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}
-.rcb b{display:block;font-size:.92rem;color:#fff;word-break:break-word;font-variant-numeric:tabular-nums}
-.rcact{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:6px}
-#done .rcact .btn{background:transparent;color:#e4efff;border:1px solid rgba(255,255,255,.35)}
-#done .rcact .btn:hover{background:rgba(255,255,255,.14)}
-#done .actions{flex-direction:column;align-items:stretch;position:static;max-width:340px;margin:26px auto 0;padding:0;border:0;background:none;animation:entra .8s .95s both}
-#done .actions .btn{width:100%}
-#done #btn-ver{background:#fff;color:#0b2545;border:0;box-shadow:0 14px 30px rgba(0,0,0,.3);font-family:Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:1.2rem;padding:16px 46px;border-radius:10px}
-#done #btn-ver:hover{transform:translateY(-2px);background:#fff}
-#done #btn-new{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:10px;padding:16px 28px}
-#done #btn-new:hover{background:rgba(255,255,255,.12)}
-#done .ctw{border-top:1px solid rgba(255,255,255,.18);width:100%;max-width:420px;padding-top:24px;animation:entra .8s 1.15s both}
-#done .ctw>span{color:#8fb1de}
-#done .ct{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));width:100%;gap:10px}
-#done .ct a{text-align:center;border-radius:12px;padding:12px 8px}
-
-/* ============================================================
-   RESULTADOS
-============================================================ */
-.tools{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 22px;box-shadow:0 1px 3px rgba(15,31,53,.06),0 8px 24px rgba(15,31,53,.05);margin-bottom:14px}
-.tools h2{margin:0;font-size:1.3rem;font-weight:700;color:var(--n900);letter-spacing:-.01em}
-.tools .grp{display:flex;flex-wrap:wrap;gap:8px}
-.modos{display:inline-flex;background:#d6e1f0;border-radius:10px;padding:3px}
-.seg{border:0;background:transparent;padding:8px 18px;border-radius:8px;font:inherit;font-weight:600;font-size:.86rem;color:var(--n800);cursor:pointer}
-.seg.on{background:#fff;color:var(--b700);box-shadow:0 1px 3px rgba(15,31,53,.15)}
-.filtros{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
-.chip{border:1px solid #c3d1e6;background:#fff;color:var(--n800);border-radius:99px;padding:8px 18px;font:inherit;font-weight:600;font-size:.86rem;cursor:pointer;transition:background .15s,color .15s}
-.chip:hover{background:var(--b100)}
-.chip.on{background:var(--n900);border-color:var(--n900);color:#fff}
-.hint{color:var(--mut);font-size:.84rem;margin-bottom:4px}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:6px}
-.kc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;box-shadow:inset 0 3px 0 var(--b600),0 1px 2px rgba(15,31,53,.05)}
-.kc b{display:block;font-size:1.9rem;font-weight:700;color:var(--n900);line-height:1.2;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.kc span{color:var(--mut);font-size:.86rem}
-.cat{margin:34px 0 14px;padding-bottom:10px;border-bottom:2px solid var(--n900);color:var(--n900);font-size:1.3rem;font-weight:700;letter-spacing:-.01em}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:0 1px 2px rgba(15,31,53,.05);min-width:0;transition:box-shadow .2s,transform .2s}
-.card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(15,31,53,.12)}
-.card h3{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;font-size:.95rem;line-height:1.4;color:var(--n900);font-weight:600}
-.freq{background:var(--b50);border:1px solid var(--line);border-radius:8px;padding:7px 12px;margin:0 0 16px;font-size:.82rem;color:var(--mut)}
-.freq b{color:var(--b700);font-weight:600}
-.pie{width:100%;max-width:240px;margin:0 auto 18px;aspect-ratio:1/1}
-.pie canvas{display:block;width:100%;height:100%;cursor:pointer}
-.leg{list-style:none;margin:0;padding:14px 0 0;border-top:1px solid var(--line);display:grid;gap:9px;font-size:.84rem}
-.leg li{display:block}
-.lr{display:flex;align-items:center;gap:9px}
-.leg i{width:11px;height:11px;border-radius:3px;flex:none}
-.leg em{font-style:normal;flex:1;min-width:0;overflow-wrap:anywhere;color:var(--ink)}
-.leg b{color:var(--n800);white-space:nowrap;font-weight:600;font-variant-numeric:tabular-nums}
-.pb{height:6px;background:var(--b100);border-radius:99px;overflow:hidden;margin-top:5px}
-.pb u{display:block;height:100%;border-radius:99px;text-decoration:none}
-.tw{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 3px rgba(15,31,53,.06)}
-.tb{width:100%;border-collapse:collapse;font-size:.92rem;min-width:540px}
-.tb th{background:var(--n900);color:#fff;text-align:left;padding:12px 16px;font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
-.tb td{padding:12px 16px;border-top:1px solid var(--line);vertical-align:top}
-.tb tbody tr:nth-child(even) td{background:var(--b50)}
-.tb td:first-child{width:48px;color:var(--mut);font-weight:700}
-.pc{font-weight:700;color:var(--b700);white-space:nowrap;font-variant-numeric:tabular-nums}
-.empty{background:#fff;border:1px dashed var(--b300);border-radius:12px;padding:44px 24px;text-align:center;color:var(--mut)}
-.empty .btn{margin-top:14px}
-.tip{position:fixed;z-index:50;background:#0b2545;color:#fff;padding:7px 12px;border-radius:8px;font-size:.82rem;font-weight:600;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.25);max-width:260px;display:none}
-
-/* ============================================================
-   RODAPÉ
-============================================================ */
-.foot{margin-top:auto;background:#061528;color:#9fb6d8;padding:30px 0 38px;text-align:center;font-size:.84rem;border:0}
-.foot[hidden]{display:none}
-.foot-b{display:flex;align-items:center;justify-content:center;gap:10px;color:#fff;font-weight:700;margin-bottom:8px}
-.foot-b .logo{width:24px;height:24px;border-radius:6px;background:#13386b}
-.foot p{margin:0 0 10px}
-.foot a{color:#8fbdf5;text-decoration:underline}
-
-/* ============================================================
-   RESPONSIVO
-============================================================ */
-@media (max-width:860px){.viz{display:none}.hero{padding:44px 0 52px}}
-@media (min-width:900px){
-  .panel{padding:40px 44px}
-  .opts{grid-template-columns:repeat(3,1fr)}
-  .stp{gap:16px}
-  .grid{grid-template-columns:repeat(3,1fr)}
-  .kpis{gap:18px}
-}
-@media (min-width:1200px){.wrap{max-width:1180px}}
-@media (max-width:899px) and (min-width:641px){
-  .opts{grid-template-columns:repeat(2,1fr)}
-  .grid{grid-template-columns:repeat(2,1fr)}
-}
-@media (max-width:640px){
-  .wrap{padding:0 14px}
-  .bar{min-height:56px;gap:8px}
-  .bn{display:none}
-  nav{flex:1;justify-content:space-between}
-  .tab{flex:1;padding:0 6px;font-size:.88rem;white-space:nowrap;min-height:56px}
-  .panel{padding:18px}
-  .opts{grid-template-columns:1fr;padding-left:0}
-  .q{padding-left:14px;padding-right:14px}
-  .actions{position:sticky;bottom:0;background:#fff;margin:24px -18px -18px;padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);border-radius:0 0 12px 12px}
-  .actions .btn{flex:1}
-  .grid,.kpis{grid-template-columns:1fr}
-  .tools{padding:14px}
-  .tools .grp{display:grid;grid-template-columns:1fr 1fr;width:100%}
-  .tools .grp .btn{width:100%;padding-left:8px;padding-right:8px}
-  .g2,.g2b{grid-template-columns:1fr}
-  .stp{grid-template-columns:repeat(5,1fr);gap:2px}
-  .sd{font-size:.62rem}
-  .sd i{width:28px;height:28px;font-size:.78rem}
-  .tb{min-width:0;font-size:.84rem}
-  .tb th,.tb td{padding:10px 9px}
-  .tb th:first-child,.tb td:first-child{display:none}
-  .rcb{grid-template-columns:1fr}
-  .go{width:100%;max-width:360px;padding:0 24px}
-  .l2 b{-webkit-text-stroke-width:1.5px}
-  .trio{letter-spacing:.16em;gap:10px;font-size:.7rem}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-  html{scroll-behavior:auto}
-}
-@media print{
-  .top,.tools .grp,.filtros,.hint,.tip,.modos,.skip,.ctw,.fhead,.foot{display:none}
-  main{padding-top:0}
-  .card{break-inside:avoid;box-shadow:none}
-  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pesquisa Socioeconômica</title>
+  <meta name="description" content="Pesquisa socioeconômica com perguntas sobre perfil pessoal, educacional e profissional e gráficos de resultados.">
+  <meta name="theme-color" content="#0b2545">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pesquisa Socioeconômica">
+  <meta property="og:description" content="Ajude-nos a entender o seu perfil socioeconômico. Responda em poucos minutos.">
+  <meta property="og:locale" content="pt_BR">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b2545'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%233b82e0' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Anton&family=Kaushan+Script&display=swap">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<noscript><div class="nojs">Para responder à pesquisa, ative o JavaScript no seu navegador.</div></noscript>
-<a class="skip" href="#conteudo">Ir para o conteúdo</a>
-
-<!-- ============== TOPO ============== -->
-<header class="top" id="topo">
-  <div class="wrap bar">
-    <div class="brand"><span class="logo"></span><span class="bn">Pesquisa Socioeconômica</span></div>
-    <nav aria-label="Seções">
-      <button class="tab on" data-v="ini" type="button">Início</button>
-      <button class="tab" data-v="form" type="button">Responder</button>
-      <button class="tab" data-v="res" type="button">Resultados <span class="bd" id="bd" hidden>0</span></button>
-    </nav>
-  </div>
-</header>
-
-<!-- ============== HERO ============== -->
-<section class="hero" id="hero">
-  <div class="aurora" aria-hidden="true"></div>
-  <div class="viz" aria-hidden="true">
-    <svg class="viz-svg" viewBox="0 0 400 400">
-      <circle class="ring" cx="200" cy="200" r="192"/>
-      <circle class="ring r2" cx="200" cy="200" r="158"/>
-      <circle class="sg" cx="200" cy="200" r="110" stroke="#2f6fd6" style="--len:231;--off:0;--n:0"/>
-      <circle class="sg" cx="200" cy="200" r="110" stroke="#4a90ec" style="--len:183;--off:-235;--n:1"/>
-      <circle class="sg" cx="200" cy="200" r="110" stroke="#82bcff" style="--len:141;--off:-421.6;--n:2"/>
-      <circle class="sg" cx="200" cy="200" r="110" stroke="#c6e0ff" style="--len:120;--off:-566.7;--n:3"/>
-    </svg>
-  </div>
-  <div class="hero-c wrap">
-    <span class="kick">pesquisa</span>
-    <h1 class="lt">
-      <span class="l1"><b>Socio</b></span>
-      <span class="l2"><b>econômica</b></span>
-    </h1>
-    <div class="trio" aria-hidden="true">Pessoal<i></i>Educacional<i></i>Profissional</div>
-    <p class="lead">Ajude-nos a entender o seu perfil socioeconômico.</p>
-    <div class="btns">
-      <button class="go" id="ini-go" type="button">Começar</button>
+  <noscript><div class="nojs">Para responder a pesquisa, ative o JavaScript no seu navegador.</div></noscript>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <header class="top" id="topo">
+    <div class="wrap bar">
+      <div class="brand"><span class="logo"></span><span class="bn">Pesquisa Socioeconômica</span></div>
+      <nav>
+        <button class="tab on" data-v="ini" type="button">Início</button>
+        <button class="tab" data-v="form" type="button">Responder</button>
+        <button class="tab" data-v="res" type="button">Resultados <span class="bd" id="bd" hidden></span></button>
+      </nav>
     </div>
-    <div class="ctw">
-      <span>Já respondeu?</span>
-      <div class="ct">
-        <a href="#" id="lnk-resume">Continuar rascunho</a>
-        <a href="#" id="lnk-results">Ver resultados</a>
-      </div>
-    </div>
-  </div>
-</section>
+  </header>
 
-<!-- ============== CONTEÚDO PRINCIPAL ============== -->
-<main class="wrap" id="conteudo">
-
-  <!-- ===== FORMULÁRIO (wizard) ===== -->
-  <section class="view" id="view-form">
-    <div class="fhead">
-      <button class="fbk" id="f-inicio" type="button" aria-label="Voltar ao início">←</button>
-      <span class="fbrand"><span class="logo"></span>Pesquisa Socioeconômica</span>
-      <span></span>
-    </div>
-
-    <div id="wizard">
-      <div class="note" id="resume-note" hidden>Rascunho recuperado: você pode continuar de onde parou. <button class="lnk" id="recom" type="button">Recomeçar</button></div>
-      <ol class="stp" id="steps"></ol>
-      <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="prog-bar"></i></div>
-      <div class="count" id="counter" aria-live="polite"></div>
-
-      <div class="panel">
-        <div id="qs"></div>
-        <div class="msg" id="msg" role="alert"></div>
-        <div class="actions">
-          <button class="btn ghost" id="back" type="button">Voltar</button>
-          <button class="btn" id="next" type="button">Continuar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== TELA DE CONCLUSÃO ===== -->
-    <div id="done" hidden>
-      <div class="panel done-box">
-        <div class="viz" aria-hidden="true">
-          <svg class="viz-svg" viewBox="0 0 400 400">
-            <circle class="ring" cx="200" cy="200" r="192"/>
-            <circle class="ring r2" cx="200" cy="200" r="158"/>
-            <circle class="sg" cx="200" cy="200" r="110" stroke="#2f6fd6" style="--len:231;--off:0;--n:0"/>
-            <circle class="sg" cx="200" cy="200" r="110" stroke="#4a90ec" style="--len:183;--off:-235;--n:1"/>
-            <circle class="sg" cx="200" cy="200" r="110" stroke="#82bcff" style="--len:141;--off:-421.6;--n:2"/>
-            <circle class="sg" cx="200" cy="200" r="110" stroke="#c6e0ff" style="--len:120;--off:-566.7;--n:3"/>
-          </svg>
-        </div>
-        <div class="dkick">Respostas enviadas</div>
-        <h2 class="dt">
-          <span class="l1"><b>Obrigado</b></span>
-          <span class="l2"><b>por ajudar</b></span>
-        </h2>
-        <p class="sub">Sua participação foi registrada.</p>
-        <div class="rcb">
-          <div><small>Protocolo</small><b id="rc-prot">—</b></div>
-          <div><small>Data e hora</small><b id="rc-data">—</b></div>
-          <div><small>Participante</small><b id="rc-nome">Anônimo</b></div>
-        </div>
-        <div class="rcact">
-          <button class="btn sm light" id="rc-copy" type="button">Copiar protocolo</button>
-          <button class="btn sm light" id="rc-print" type="button">Imprimir comprovante</button>
-        </div>
-        <div class="actions">
-          <button class="btn" id="btn-ver" type="button">Ver resultados</button>
-          <button class="btn ghost" id="btn-new" type="button">Nova resposta</button>
-        </div>
-        <div class="ctw">
-          <span>Dúvidas ou sugestões? Fale com a gente</span>
-          <div class="ct" id="contatos-final"></div>
-        </div>
+  <section class="hero" id="hero">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="viz" aria-hidden="true"><svg class="viz-svg" viewBox="0 0 400 400"><circle class="ring" cx="200" cy="200" r="192"/><circle class="ring r2" cx="200" cy="200" r="158"/><circle class="sg" cx="200" cy="200" r="110" stroke="#2f6fd6" style="--len:231;--off:0;--n:0"/><circle class="sg" cx="200" cy="200" r="110" stroke="#4a90ec" style="--len:183;--off:-235;--n:1"/><circle class="sg" cx="200" cy="200" r="110" stroke="#82bcff" style="--len:141;--off:-421.6;--n:2"/><circle class="sg" cx="200" cy="200" r="110" stroke="#c6e0ff" style="--len:120;--off:-566.7;--n:3"/></svg></div>
+    <div class="hero-c">
+      <span class="kick">pesquisa</span>
+      <h1 class="lt"><span class="l1"><b>Socio</b></span><span class="l2"><b>econômica</b></span></h1>
+      <div class="trio" aria-hidden="true">Pessoal<i></i>Educacional<i></i>Profissional</div>
+      <p class="lead">Ajude-nos a entender o seu perfil socioeconômico.</p>
+      <div class="btns">
+        <button class="go" id="ini-go" type="button">Começar</button>
       </div>
     </div>
   </section>
 
-  <!-- ===== RESULTADOS ===== -->
-  <section class="view" id="view-res">
-    <div class="tools">
-      <h2>Resultados da pesquisa</h2>
-      <div class="grp">
-        <div class="modos" role="tablist" aria-label="Modo de visualização">
-          <button class="seg on" data-modo="graficos" role="tab" type="button">Gráficos</button>
-          <button class="seg" data-modo="tabela" role="tab" type="button">Resumo em tabela</button>
-        </div>
-        <button class="btn sm ghost" id="atualizar" type="button">↻ Atualizar</button>
-        <button class="btn sm ghost" id="exp-json" type="button">⬇ JSON</button>
-        <button class="btn sm ghost" id="exp-csv" type="button">⬇ CSV</button>
+  <main class="wrap" id="conteudo">
+    <section id="view-form" hidden>
+      <div class="fhead">
+        <button class="fbk" id="f-inicio" type="button" aria-label="Voltar ao início"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <span class="fbrand"><span class="logo"></span>Pesquisa Socioeconômica</span>
+        <span></span>
       </div>
-    </div>
-    <div class="filtros" id="filtros"></div>
-    <div class="hint">Passe o mouse ou toque nas fatias dos gráficos para ver os detalhes de cada resposta.</div>
-    <div class="kpis" id="kpis"></div>
-    <div id="resultBody"></div>
-  </section>
 
-</main>
+      <div id="wizard">
+        <div class="note" id="resume" hidden>Rascunho recuperado: você pode continuar de onde parou. <button class="lnk" id="recom" type="button">Recomeçar</button></div>
+        <div class="stp" id="steps"></div>
+        <div class="prog" id="progbar" role="progressbar" aria-label="Progresso da pesquisa" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="prog"></i></div>
+        <div class="count" id="count" aria-live="polite"></div>
+        <div class="panel">
+          <div id="qs"></div>
+          <div class="msg" id="msg" role="alert"></div>
+          <div class="actions">
+            <button class="btn ghost" id="back" type="button">Voltar</button>
+            <button class="btn" id="next" type="button">Continuar</button>
+          </div>
+        </div>
+      </div>
 
-<footer class="foot" id="rodape">
-  <div class="wrap">
-    <div class="foot-b"><span class="logo"></span> Pesquisa Socioeconômica</div>
-    <p>Os dados ficam salvos neste navegador. Para exportar, use os botões na aba Resultados.</p>
-    <p>&copy; <span id="ano"></span> · Projeto de estudo aberto · Dados tratados conforme LGPD</p>
-  </div>
-</footer>
+      <div id="done" hidden>
+        <div class="panel done-box">
+          <div class="viz" aria-hidden="true"><svg class="viz-svg" viewBox="0 0 400 400"><circle class="ring" cx="200" cy="200" r="192"/><circle class="ring r2" cx="200" cy="200" r="158"/><circle class="sg" cx="200" cy="200" r="110" stroke="#2f6fd6" style="--len:231;--off:0;--n:0"/><circle class="sg" cx="200" cy="200" r="110" stroke="#4a90ec" style="--len:183;--off:-235;--n:1"/><circle class="sg" cx="200" cy="200" r="110" stroke="#82bcff" style="--len:141;--off:-421.6;--n:2"/><circle class="sg" cx="200" cy="200" r="110" stroke="#c6e0ff" style="--len:120;--off:-566.7;--n:3"/></svg></div>
+          <div class="dkick">Respostas enviadas</div>
+          <h2 class="dt"><span class="l1"><b>Obrigado</b></span><span class="l2"><b>por ajudar</b></span></h2>
+          <p class="sub">Sua participação foi registrada.</p>
+          <div class="rcb">
+            <div><small>Protocolo</small><b id="rc-prot"></b></div>
+            <div><small>Data e hora</small><b id="rc-data"></b></div>
+            <div><small>Participante</small><b id="rc-nome"></b></div>
+          </div>
+          <div class="rcact">
+            <button class="btn sm ghost" id="rc-ver" type="button">Ver minhas respostas</button>
+       </div>
+          <div class="rc-tab" id="rc-tab" hidden></div>
+          <div class="actions">
+            <button class="btn" id="btn-ver" type="button">Ver resultados</button>
+            <button class="btn ghost" id="btn-new" type="button">Nova resposta</button>
+          </div>
+          <div class="ctw"><span>Dúvidas ou sugestões? Fale com a gente</span><div class="ct" id="ct-done"></div></div>
+        </div>
+      </div>
+    </section>
 
-<div class="tip" id="tip"></div>
+    <section id="view-res" hidden>
+      <div class="tools">
+        <h2>Resultados da pesquisa</h2>
+        <div class="grp">
+          <button class="btn sm ghost" id="btn-reload" type="button" hidden>Atualizar</button>
+        </div>
+      </div>
+      <div class="kpis">
+        <div class="kc"><b id="k1">0</b><span>respostas registradas</span></div>
+        <div class="kc"><b>30</b><span>perguntas analisadas</span></div>
+        <div class="kc"><b id="k3">-</b><span>última resposta</span></div>
+      </div>
+      <div class="modos" id="modos"></div>
+      <div class="filtros" id="filtros"></div>
+      <div class="hint" id="hint">Passe o mouse ou toque nas fatias dos gráficos para ver os detalhes de cada resposta.</div>
+      <div id="charts"></div>
+    </section>
 
-<script src="app.js"></script>
+  </main>
+
+  <footer class="foot" id="rodape"><div class="wrap"><div class="foot-b"><span class="logo"></span><span>Pesquisa Socioeconômica</span></div><p></p></div></footer>
+
+  <script src="perguntas.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
