@@ -20,5 +20,5 @@ var BANCO = {
 /* Resultados (graficos). true = qualquer pessoa pode ver os graficos apos responder.
    false = os graficos ficam escondidos. Os graficos nunca mostram nome, e-mail nem telefone. */
 var PESQUISA = {
-  resultadosPublicos: true
+  resultadosPublicos: false
 };
