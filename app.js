@@ -83,7 +83,7 @@ const CORES = ['#0b2545','#13386b','#1b4fa8','#2563c9','#3b82e0','#5a9be8','#82b
 let state = {
   step: 0,               // 0=cadastro, 1..3=categorias, 4=revisão
   answers: new Array(TOTAL_Q).fill(null),
-  cad: {nome:'',email:'',tel:'',cidade:'',uf='',fonte:''},
+  cad: {nome:'',email:'',tel:'',cidade:'',uf:'',fonte:''},
   proto: null,
   ts: null
 };
