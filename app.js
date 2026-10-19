@@ -429,11 +429,19 @@
     renderResultados();
   });
 
-  function modos() {
-    $('modos').innerHTML = [['graf', 'Gráficos'], ['tab', 'Resumo em tabela']].concat(PQ.REMOTO ? [] : [['resp', 'Respostas']]).map(function (m) {
-      return '<button type="button" class="seg' + (m[0] === modo ? ' on' : '') + '" data-m="' + m[0] + '">' + m[1] + '</button>';
-    }).join('');
-  }
+  
+function modos() {
+  $('modos').innerHTML = [
+    ['graf', 'Gráficos'],
+    ['tab', 'Resumo em tabela']
+  ].map(function (m) {
+    return '<button type="button" class="seg' +
+      (m[0] === modo ? ' on' : '') +
+      '" data-m="' + m[0] + '">' +
+      m[1] + '</button>';
+  }).join('');
+}
+
   $('modos').addEventListener('click', function (e) {
     var b = e.target.closest ? e.target.closest('.seg') : null;
     if (!b) { return; }
